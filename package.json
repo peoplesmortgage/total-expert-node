@@ -1,0 +1,27 @@
+{
+  "name": "total-expert-node",
+  "version": "0.1.0",
+  "description": "A functional wrapper for communicating with the Total Expert CRM API",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/peoplesmortgage/total-expert-node.git"
+  },
+  "keywords": [
+    "total-expert",
+    "mortgage",
+    "crm",
+    "node"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/peoplesmortgage/total-expert-node/issues"
+  },
+  "homepage": "https://github.com/peoplesmortgage/total-expert-node#readme"
+}
