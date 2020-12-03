@@ -1,0 +1,11 @@
+{
+  "extends": "@tsconfig/node12/tsconfig.json",
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "declaration": true,
+    "module": "ESNext",
+    "moduleResolution": "node"
+  },
+  "exclude": ["__tests__"]
+}
