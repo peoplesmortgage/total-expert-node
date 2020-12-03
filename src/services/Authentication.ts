@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { Service, Inject, Container } from 'typedi';
 import fetch, { RequestInit, Response } from 'node-fetch';
 import { TotalExpertInit } from '../types';
@@ -12,6 +13,8 @@ import {
 @Service()
 class Authentication {
   accessToken: TotalExpertInit['accessToken'];
+
+  #tokenUrl: string;
 
   @Inject(ENVIRONMENT)
   environment!: string;
@@ -28,6 +31,7 @@ class Authentication {
   constructor() {
     const accessToken: string = Container.get(AUTH_TOKEN);
     this.accessToken = accessToken;
+    this.#tokenUrl = `${this.environment}/v1/token`;
   }
 
   setAccessToken(token: TotalExpertInit['accessToken']): void {
@@ -35,12 +39,8 @@ class Authentication {
   }
 
   async authenticate() {
-    const url = `${this.environment}/v1/token`;
-    console.log(url);
-    console.log(this.clientSecret);
     const encodedCredentials = Buffer.from(`${this.clientId}:${this.clientSecret}`).toString('base64');
-    console.log(encodedCredentials);
-    const response = await fetch(url, {
+    const response = await fetch(this.#tokenUrl, {
       method: 'POST',
       redirect: 'follow',
       headers: {
@@ -51,8 +51,6 @@ class Authentication {
     });
     // eslint-disable-next-line camelcase
     const { access_token } = await response.json();
-    console.log('ACCESS TOKEN:');
-    console.log(access_token);
     this.setAccessToken(access_token);
   }
 
@@ -73,7 +71,6 @@ class Authentication {
     const authError = new Error('401_UNAUTHORIZED_CAN_RETRY');
     const makeRequest = async (isRetry: boolean): Promise<Response> => {
       try {
-        console.log(this.accessToken);
         if (!this.accessToken) {
           await this.handleAuth();
         }
@@ -104,10 +101,33 @@ class Authentication {
     return result;
   }
 
-  async getToJSON(url: string): Promise<any> {
-    const response = await this.withAuthFetch(url);
-    const data = await response.json();
+  async tokenFromAuthCode(authCode: string, redirectUri: string): Promise<any> {
+    const options: RequestInit = {
+      method: 'POST',
+      redirect: 'follow',
+      body: JSON.stringify({
+        grant_type: 'authorization_code',
+        code: authCode,
+        redirect_uri: redirectUri,
+      }),
+    };
+    const response = await this.withAuthFetch(this.#tokenUrl, options);
+    const data = await response.text();
     return data;
+  }
+
+  async refreshToken(token: string): Promise<string> {
+    const options: RequestInit = {
+      method: 'POST',
+      body: JSON.stringify({
+        grant_type: 'resfresh_token',
+        refresh_token: token,
+      }),
+    };
+    // this is making some assumptions right?
+    const response = await this.withAuthFetch(this.#tokenUrl, options, true);
+    const { access_token } = await response.json();
+    return access_token as string;
   }
 }
 

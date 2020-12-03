@@ -30,6 +30,15 @@
     "ts-jest": "^26.4.4",
     "typescript": "^4.1.2"
   },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/src/*.{ts,tsx}",
+      "!**/src/index.ts"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/peoplesmortgage/total-expert-node.git"

@@ -1,4 +1,5 @@
 import { Service, Container } from 'typedi';
+import { RequestInit, Response } from 'node-fetch';
 import { TotalExpertInit } from './types';
 import {
   AUTH_TOKEN,
@@ -7,10 +8,12 @@ import {
   ENVIRONMENT,
   ON_AUTHENTICATE,
 } from './utils';
-import Loans from './services/Loans';
+import { Loans, Authentication } from './services';
 
 @Service()
 class TotalExpert {
+  authentication: Authentication;
+
   loans: Loans;
 
   constructor({
@@ -30,7 +33,19 @@ class TotalExpert {
     Container.set(AUTH_TOKEN, accessToken || '');
     Container.set(ON_AUTHENTICATE, onAuthenticate || null);
 
+    this.authentication = Container.get(Authentication);
     this.loans = Container.get(Loans);
+  }
+
+  async fetch(url: string, options: RequestInit = {}, skipRetry: boolean): Promise<Response> {
+    const response = await this.authentication.withAuthFetch(url, options, skipRetry);
+    return response;
+  }
+
+  // (short and stout)
+  async teapot(): Promise<Response> {
+    const response = await this.authentication.withAuthFetch('v1/teapot');
+    return response;
   }
 }
 

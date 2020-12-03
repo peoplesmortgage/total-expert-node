@@ -21,7 +21,7 @@ export interface TotalExpertUser {
   email?: string;
 }
 
-export interface TotalExpertContractInit {
+export interface TotalExpertContactInit {
   source: string;
   first_name: string;
   last_name: string;
@@ -31,7 +31,7 @@ export interface TotalExpertContractInit {
   email?: string;
 }
 
-export interface TotalExpertContract extends TotalExpertContractInit{
+export interface TotalExpertContact extends TotalExpertContactInit {
   readonly id: number;
   title?: string;
   address?: string;
@@ -52,10 +52,14 @@ export interface CustomFieldContract {
 export interface TotalExpertLoanInit {
   external_id: string | number;
   custom?: CustomFieldContract[];
-  borrower: TotalExpertContractInit;
+  borrower: TotalExpertContactInit;
   [key: string]: any;
 }
 
 export interface TotalExpertLoanAdminInit extends TotalExpertLoanInit {
   owner: TotalExpertUser;
+}
+
+export interface TotalExpertLoan {
+  readonly id: number;
 }
