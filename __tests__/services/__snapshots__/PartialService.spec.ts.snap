@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PartialService stores its constructor argument as the urlSlug protected property 1`] = `
+TEService {
+  "auth": Object {
+    "authenticate": [MockFunction],
+    "setAccessToken": [MockFunction],
+    "withAuthFetch": [MockFunction],
+  },
+  "urlSlug": "/the-url-slug-value",
+}
+`;
+
+exports[`PartialService will create a record with the arguments provided 1`] = `
+Array [
+  "/the-resource-slug",
+  Object {
+    "body": "{\\"mock\\":\\"test data\\"}",
+    "method": "POST",
+  },
+]
+`;
