@@ -15,7 +15,7 @@ A functional wrapper to communicate with v1 of the [Total Expert](https://totale
 npm install total-expert-node
 ```
 
-Import and include your client ID and client secret
+Import and include your client ID and client secret:
 ```ts
 import TotalExpert from 'total-expert-node';
 
@@ -140,7 +140,7 @@ Returns `string` or `null` (whatever the value of your access token is).
 
 #### authenticate()
 
-Will exchange the provided client ID and client secret for an access token and stores it to the instance.
+Will exchange the provided client ID and client secret for an access token and store it to the instance.
 
 ```ts
 await totalExpert.auth.authenticate();
@@ -210,7 +210,7 @@ Returns a promise that resolves to the JSON response from the API.
 
 #### create()
 
-Used to add a record of the this type.
+Create an entity of the type (in the example below, a loan) this method is called from.
 
 ```ts
 await totalExpert.loans.create({
