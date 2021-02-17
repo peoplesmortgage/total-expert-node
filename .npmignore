@@ -1,0 +1,4 @@
+.eslintrc.js
+/__tests__/*
+/.github/*
+coverage/*
