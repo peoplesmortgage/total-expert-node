@@ -85,13 +85,36 @@ const totalExpert = new TotalExpert({
 });
 ```
 
-Leaving `onAuthenticate` empty is functionally the same as:
+You can also hook into when the token used was not successful using the `onAuthenticationFailure` function. It has the same signature as `onAuthenticate`, and will be called whenever there is a `401` received from the token currently stored in the instance.
+
+For example:
+
+```ts
+import TotalExpert, { TotalExpertAuth } from 'total-expert-node';
+import tellSomethingItFailed from './someCustomAction';
+
+const onAuthenticateFailure = async (auth: TotalExpertAuth): Promise<void> => {
+  console.log('The latest request failed because it was unauthorized!');
+  await tellSomethingItFailed();
+  // remove the token in the instance, as it is no longer valid:
+  auth.setAccessToken(null);
+};
+
+const totalExpert = new TotalExpert({
+  onAuthenticateFailure,
+  clientId: '<YOUR-CLIENT-ID>',
+  clientSecret: '<YOUR-CLIENT-SECRET>',
+});
+```
+
+Leaving these functions empty is functionally the same as:
 
 ```ts
 import TotalExpert, { TotalExpertAuth } from 'total-expert-node';
 
 const totalExpert = new TotalExpert({
   onAuthenticate: async (auth: TotalExpertAuth) => auth.authenticate(),
+  onAuthenticateFailure: async (auth: TotalExpertAuth) =>  auth.setAccessToken(null),
   clientId: '<YOUR-CLIENT-ID>',
   clientSecret: '<YOUR-CLIENT-SECRET>',
 });

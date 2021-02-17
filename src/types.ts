@@ -3,13 +3,16 @@ import Authentication from './services/Authentication';
 
 export type TotalExpertAuth = InstanceType<typeof Authentication>;
 
+// eslint-disable-next-line no-unused-vars
+export type AuthenticationHook = (totalExpertAuthentication: Authentication) => Promise<void>;
+
 export interface TotalExpertInit {
   clientId: string;
   clientSecret: string;
   environment?: string;
   accessToken?: string | null;
-  // eslint-disable-next-line no-unused-vars
-  onAuthenticate?: (totalExpertAuthentication: Authentication) => Promise<void>;
+  onAuthenticate?: AuthenticationHook;
+  onAuthenticateFailure?: AuthenticationHook;
 }
 
 export type TotalExpertId = string | number;

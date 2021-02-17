@@ -8,6 +8,7 @@ import {
   CLIENT_SECRET,
   CLIENT_ID,
   ON_AUTHENTICATE,
+  ON_AUTHENTICATE_FAILURE,
   AUTH_TOKEN,
 } from '../../src/utils';
 
@@ -21,6 +22,7 @@ describe('Authentication', () => {
     { id: CLIENT_ID, value: 'TEST_CLIENT_ID' },
     { id: CLIENT_SECRET, value: 'TEST_CLIENT_SECRET' },
     { id: ON_AUTHENTICATE, value: null },
+    { id: ON_AUTHENTICATE_FAILURE, value: null },
     { id: AUTH_TOKEN, value: '' },
   ]);
   const authInstance = Container.get(Authentication);
@@ -124,6 +126,47 @@ describe('Authentication', () => {
         mockFetchResponse();
         await authInstance.withAuthFetch('/some-resource');
         expect(mockOnAuthenticate).toHaveBeenCalledWith(authInstance);
+      });
+    });
+
+    describe('with onAuthenticateFailure function', () => {
+      const mockOnAuthFailure = jest.fn();
+      beforeAll(() => {
+        Container.remove(ON_AUTHENTICATE_FAILURE);
+        Container.set(ON_AUTHENTICATE_FAILURE, mockOnAuthFailure);
+      });
+
+      afterAll(() => {
+        Container.remove(ON_AUTHENTICATE_FAILURE);
+        Container.set(ON_AUTHENTICATE_FAILURE, null);
+      });
+
+      beforeEach(() => {
+        mockTokenFetchAnd401Times(10);
+      });
+
+      it('will call the onAuthFailure function if it experienced a 401 and will retry', async () => {
+        try {
+          await new Authentication().withAuthFetch('/some-resource-url');
+        } catch (error) {}
+        expect(mockOnAuthFailure).toHaveBeenCalledTimes(1);
+      });
+
+      it('calls the onAuthFailure function with an instance of the authentication class', async () => {
+        try {
+          await authInstance.withAuthFetch('/some-resource');
+        } catch (error) {}
+        expect(mockOnAuthFailure).toHaveBeenCalledWith(authInstance);
+      });
+
+      it('catches the UnhandledPromiseRejection should one occur', async () => {
+        const internalError = new Error('some error');
+        mockOnAuthFailure.mockRejectedValueOnce(internalError);
+        try {
+          await authInstance.withAuthFetch('/some-resource');
+        } catch (error) {
+          expect(error).toEqual(internalError);
+        }
       });
     });
 

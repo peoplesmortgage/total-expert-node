@@ -6,6 +6,7 @@ import {
   CLIENT_SECRET,
   ENVIRONMENT,
   ON_AUTHENTICATE,
+  ON_AUTHENTICATE_FAILURE,
 } from './utils';
 import {
   AdminFullService as WithAdmin,
@@ -46,6 +47,7 @@ class TotalExpert {
     clientSecret,
     accessToken,
     onAuthenticate,
+    onAuthenticateFailure,
   }: TotalExpertInit) {
     const hasReqiuredArgs = [clientId, clientSecret].every((value) => Boolean(value));
     if (!hasReqiuredArgs) {
@@ -57,6 +59,7 @@ class TotalExpert {
       { id: ENVIRONMENT, value: environment || 'https://public.totalexpert.net/' },
       { id: AUTH_TOKEN, value: accessToken || '' },
       { id: ON_AUTHENTICATE, value: onAuthenticate || null },
+      { id: ON_AUTHENTICATE_FAILURE, value: onAuthenticateFailure || null },
     ]);
 
     this.authentication = Container.get(Authentication);

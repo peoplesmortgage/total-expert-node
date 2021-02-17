@@ -21,6 +21,7 @@ module.exports = {
     'no-useless-constructor': 'off',
     'class-methods-use-this': 'off',
     'no-empty-function': 'off',
+    'linebreak-style': 'off',
   },
   settings: {
     'import/resolver': {

@@ -7,6 +7,7 @@ import {
   CLIENT_SECRET,
   CLIENT_ID,
   ON_AUTHENTICATE,
+  ON_AUTHENTICATE_FAILURE,
   AUTH_TOKEN,
 } from '../utils';
 
@@ -113,6 +114,18 @@ class Authentication {
     await this.authenticate();
   }
 
+  private async handleAuthFailure(): Promise<void> {
+    const onAuthFailure: TotalExpertInit['onAuthenticateFailure'] = Container.get(ON_AUTHENTICATE_FAILURE);
+    if (onAuthFailure) {
+      await onAuthFailure(this as Authentication)
+        .catch((error) => {
+          throw error;
+        });
+    } else {
+      this.setAccessToken(null);
+    }
+  }
+
   async withAuthFetch(
     fetchUrl: string,
     fetchOpts: RequestInit = {},
@@ -141,7 +154,7 @@ class Authentication {
         return response;
       } catch (error) {
         if (error === authError && !isRetry) {
-          this.setAccessToken(null);
+          await this.handleAuthFailure();
           return makeRequest(true);
         }
         throw error;
