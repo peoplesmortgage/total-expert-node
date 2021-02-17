@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Authentication authenticate calls the token endpoint with a basic auth header 1`] = `
+Array [
+  "TEST_ENVIRONMENT/v1/token",
+  Object {
+    "body": "{\\"grant_type\\":\\"client_credentials\\"}",
+    "headers": Object {
+      "Authorization": "Basic VEVTVF9DTElFTlRfSUQ6VEVTVF9DTElFTlRfU0VDUkVU",
+      "Content-Type": "application/json",
+    },
+    "method": "POST",
+    "redirect": "follow",
+  },
+]
+`;
+
+exports[`Authentication authenticate removes the authenticationPromise value when an error occurs 1`] = `
+Authentication {
+  "clientId": "TEST_CLIENT_ID",
+  "clientSecret": "TEST_CLIENT_SECRET",
+  "environment": "TEST_ENVIRONMENT",
+}
+`;
+
+exports[`Authentication authenticate removes the authenticationPromise value when complete 1`] = `
+Authentication {
+  "clientId": "TEST_CLIENT_ID",
+  "clientSecret": "TEST_CLIENT_SECRET",
+  "environment": "TEST_ENVIRONMENT",
+}
+`;
+
+exports[`Authentication refreshToken provides the refresh token and basic auth headers to the token endpoint 1`] = `
+Array [
+  "TEST_ENVIRONMENT/v1/token",
+  Object {
+    "body": "{\\"grant_type\\":\\"refresh_token\\",\\"refresh_token\\":\\"<REFRESH_TOKEN>\\"}",
+    "headers": Object {
+      "Authorization": "Basic VEVTVF9DTElFTlRfSUQ6VEVTVF9DTElFTlRfU0VDUkVU",
+      "Content-Type": "application/json",
+    },
+    "method": "POST",
+    "redirect": "follow",
+  },
+]
+`;
+
+exports[`Authentication tokenFromAuthCode provides the auth code and the redirect uri in the request to the token endpoint 1`] = `
+Array [
+  "TEST_ENVIRONMENT/v1/token",
+  Object {
+    "body": "{\\"grant_type\\":\\"authorization_code\\",\\"code\\":\\"<AUTH CODE>\\",\\"redirect_uri\\":\\"<REDIRECT URL>\\"}",
+    "headers": Object {
+      "Authorization": "Basic VEVTVF9DTElFTlRfSUQ6VEVTVF9DTElFTlRfU0VDUkVU",
+      "Content-Type": "application/json",
+    },
+    "method": "POST",
+    "redirect": "follow",
+  },
+]
+`;

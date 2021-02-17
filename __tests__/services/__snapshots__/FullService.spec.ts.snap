@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FullService stores its constructor argument as the urlSlug protected property 1`] = `
+FullCrudTEService {
+  "auth": Object {
+    "authenticate": [MockFunction],
+    "setAccessToken": [MockFunction],
+    "withAuthFetch": [MockFunction],
+  },
+  "urlSlug": "/the-url-slug-value",
+}
+`;
